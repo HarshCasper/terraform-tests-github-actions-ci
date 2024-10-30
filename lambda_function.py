@@ -45,7 +45,7 @@ def lambda_handler(event, context):
             download_path = os.path.join(tmpdir, source_key)
             # Extract the filename and extension
             base_filename, ext = os.path.splitext(source_key)
-            resized_filename = f"resized-{base_filename}{ext}"
+            resized_filename = f"{base_filename}{ext}"
             upload_path = os.path.join(tmpdir, resized_filename)
 
             # Download the image from S3

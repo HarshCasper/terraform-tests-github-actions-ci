@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    time = {
+      source = "hashicorp/time"
+      version = "0.12.1"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "original_images" {
   bucket = "original-images"
   force_destroy = true

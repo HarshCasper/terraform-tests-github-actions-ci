@@ -2,12 +2,10 @@ variables {
   original_bucket_name = "original-images"
   resized_bucket_name  = "resized-images"
   image_path      = "image.png"
-  test_image_key       = "*-image.png"
+  test_image_key       = "image.png"
 }
 
 run "setup" {
-  # This run block sets up the necessary infrastructure: S3 bucket, DynamoDB table, and Lambda function.
-
   module {
     source = "./"
   }
