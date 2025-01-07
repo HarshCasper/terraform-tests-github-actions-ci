@@ -1,0 +1,57 @@
+name: Run Terraform Tests on CI
+
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # “At 00:00 on Sunday.”
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  terraform:
+    name: Deploy infrastructure using Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+
+      - name: Start LocalStack
+        env:
+          LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
+        run: |
+          pip install localstack awscli-local[ver1]
+          pip install terraform-local
+          docker pull localstack/localstack-pro
+
+          # Start LocalStack in the background
+          localstack start -d
+
+          # Wait 30 seconds for the LocalStack container to become ready before timing out
+          echo "Waiting for LocalStack startup..."
+          localstack wait -t 15
+
+          echo "Startup complete"
+
+      - name: Run Terraform tests
+        run: |
+          tflocal init
+          tflocal test
+
+      - name: Check LocalStack logs
+        run: |
+          localstack logs

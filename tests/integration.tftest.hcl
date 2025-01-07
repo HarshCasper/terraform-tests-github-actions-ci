@@ -1,7 +1,7 @@
 variables {
   original_bucket_name = "original-images"
   resized_bucket_name  = "resized-images"
-  image_path      = "image.png"
+  image_path           = "image.png"
   test_image_key       = "image.png"
 }
 

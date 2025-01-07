@@ -31,12 +31,12 @@ variable "test_image_key" {
   type = string
 }
 
-resource "time_sleep" "wait_30_seconds" {
-  create_duration = "30s"
+resource "time_sleep" "wait_10_seconds" {
+  create_duration = "10s"
 }
 
 data "aws_s3_bucket_object" "resized_image" {
-  depends_on = [time_sleep.wait_30_seconds]
+  depends_on = [time_sleep.wait_10_seconds]
   bucket = var.resized_bucket_name
   key    = var.test_image_key
 }
